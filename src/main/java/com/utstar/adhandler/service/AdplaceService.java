@@ -32,6 +32,9 @@ public class AdplaceService {
     @Autowired
     private CommonConfig commonConfig;
 
+    @Autowired
+    private GlobalcodedefService globalcodedefService;
+
     public Adplace getAdplaceById(Integer adplaceId) { return adplaceMapper.selectByPrimaryKey(adplaceId); };
 
     /**
@@ -47,6 +50,7 @@ public class AdplaceService {
             Integer adplaceId = sequenceService.getSequenceId("adplaceid");
             Adplace adplace = new Adplace();
             BeanUtils.copyProperties(adplaceReq, adplace);
+            adplace.setCode(globalcodedefService.getGlobalCode(0, "47",adplaceId));
             adplace.setAdplaceid(adplaceId);
             adplace.setCreatedate(new Date());
             adplace.setStaffid(commonConfig.getStaffid());

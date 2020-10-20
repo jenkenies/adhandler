@@ -8,10 +8,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 @Slf4j
@@ -31,7 +34,7 @@ public class AdplaceController {
     @UserLoginToken
     @PostMapping(path = "/registadplace")
     @ApiOperation(value="新增广告位", response = Response.class)
-    public Response registadplace(@RequestBody AdplaceReq adplace) {
+    public Response registadplace(@Valid @RequestBody AdplaceReq adplace) {
         try{
             int ret = adplaceService.registadplace(adplace);
             if(ret == 1) return Response.duplicateError("posid exists,please modify");

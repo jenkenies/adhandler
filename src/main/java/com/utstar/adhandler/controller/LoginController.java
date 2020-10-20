@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +43,7 @@ public class LoginController {
 
     @PostMapping(path = "/login")
     @ApiOperation(value="获取token", response = Response.class)
-    public Response<String> login(@RequestBody StaffReq staffReq, HttpServletResponse response) {
+    public Response<String> login(@Valid @RequestBody StaffReq staffReq, HttpServletResponse response) {
         try{
             Staff staff = staffService.findUserByName(staffReq);
             if(staff == null)  return Response.createError("user not exists");

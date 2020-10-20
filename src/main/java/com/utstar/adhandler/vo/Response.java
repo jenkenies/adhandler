@@ -19,7 +19,7 @@ public class Response<T> {
     public static final Integer RES_PARAMS_ERROR = 202;
     public static final String RES_PARAMS_ERROR_MSG = "input params error";
     public static final Integer RES_DUPLICATE_ERROR = 203;
-
+    public static final Integer RES_PARAMS_ERR = 204;
     private Integer code;
     private String msg;
     private T data;
@@ -46,7 +46,15 @@ public class Response<T> {
     }
 
     public static <T> Response createError(String msg) {
-        return Response.builder().code(RES_DUPLICATE_ERROR).msg(msg).build();
+        return Response.builder().code(RES_DUPLICATE_ERROR).msg(msg).data("").build();
+    }
+
+    public static Response paramsError(String msg) {
+        return Response.builder().code(RES_PARAMS_ERR).msg(msg).data("").build();
+    }
+
+    public static <T> Response createError(Integer code, String msg) {
+        return Response.builder().code(code).msg(msg).data("").build();
     }
 
     @Override

@@ -49,7 +49,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             if (userLoginToken.required()) {
                 // 执行认证
                 if (token == null || StringUtils.isEmpty(token)) {
-                    returnJson(httpServletResponse, "token为空，请重新登录");
+                    returnJson(httpServletResponse, 300, "token为空，请重新登录");
                     return false;
                 }
                 // 获取 token 中的 user id
@@ -57,12 +57,12 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 try {
                     userId = JWT.decode(token).getAudience().get(0);
                 } catch (JWTDecodeException j) {
-                    returnJson(httpServletResponse, "无效token，请重新登录");
+                    returnJson(httpServletResponse, 301, "无效token，请重新登录");
                     return false;
                 }
                 Staff user = staffService.findUserById(userId);
                 if (user == null) {
-                    returnJson(httpServletResponse, "用户不存在，请重新登录");
+                    returnJson(httpServletResponse, 302,"用户不存在，请重新登录");
                     return false;
                 }
                 // 验证 token
@@ -70,7 +70,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 try {
                     jwtVerifier.verify(token);
                 } catch (JWTVerificationException e) {
-                    returnJson(httpServletResponse, "token已过期，请重新登录");
+                    returnJson(httpServletResponse, 303, "token已过期，请重新登录");
                     return false;
                 }
                 return true;
@@ -89,13 +89,13 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     }
 
 
-    private void returnJson(HttpServletResponse response, String msg){
+    private void returnJson(HttpServletResponse response,int code,  String msg){
         PrintWriter writer = null;
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
         try {
             writer = response.getWriter();
-            writer.print(JSON.toJSONString(Response.createError(msg)));
+            writer.print(JSON.toJSONString(Response.createError(code, msg)));
         } catch (Exception e){
             log.info("parse token info error[{}]", e);
         } finally {

@@ -2,16 +2,20 @@ package com.utstar.adhandler.vo;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
 public class AdplaceReq implements Serializable {
-
+    @NotNull(message = "域id不能为空")
     private Integer domainid;
+    @NotBlank(message = "广告位编号不能为空")
     private String posid;
+    @NotBlank(message = "广告位名称不能为空")
     private String name;
-    private String code;
+    @NotBlank(message = "广告位类型不能为空")
     private String type;
 
     /**
@@ -69,6 +73,7 @@ public class AdplaceReq implements Serializable {
      *
      * @mbg.generated
      */
+    @NotNull(message = "默认广告不能为空")
     private Integer defaultadid;
 
     /**
@@ -77,6 +82,7 @@ public class AdplaceReq implements Serializable {
      *
      * @mbg.generated
      */
+    @NotNull(message = "显示时长不能为空")
     private Integer duration;
 
     /**
@@ -132,6 +138,7 @@ public class AdplaceReq implements Serializable {
      *
      * @mbg.generated
      */
+    @NotBlank(message = "广告显示方式不能为空")
     private String showtype;
 
     /**
